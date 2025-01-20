@@ -23,7 +23,7 @@ oleg@nginx:~/http/server1$ cat index.html
 Server 2 : 9999
 oleg@nginx:~/http/server1$ python3 -m http.server 9999 --bind 0.0.0.0
 Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:9999/) ...
-
+```
 ---
 
 ### Задание 2
