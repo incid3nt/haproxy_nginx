@@ -33,6 +33,21 @@ Serving HTTP on 0.0.0.0 port 9999 (http://0.0.0.0:9999/) ...
 - HAproxy должен балансировать только тот http-трафик, который адресован домену example.local
 - На проверку направьте конфигурационный файл haproxy, скриншоты, где видно перенаправление запросов на разные серверы при обращении к HAProxy c использованием домена example.local и без него.
 
+2. Запустим три python сервера:
+
+```
+
+oleg@nginx:~/http/server3$ python3 -m http.server 7777 --bind 0.0.0.0
+Serving HTTP on 0.0.0.0 port 7777 (http://0.0.0.0:7777/) ...
+oleg@nginx:~/http/server1$ cat index.html
+Server 1 : 8888
+oleg@nginx:~/http/server1$ python3 -m http.server 8888 --bind 0.0.0.0
+Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:8888/) ...
+oleg@nginx:~/http/server1$ cat index.html
+Server 2 : 9999
+oleg@nginx:~/http/server1$ python3 -m http.server 9999 --bind 0.0.0.0
+Serving HTTP on 0.0.0.0 port 9999 (http://0.0.0.0:9999/) ...
+```
 
 ```
 
