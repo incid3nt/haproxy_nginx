@@ -48,6 +48,18 @@ Server 2 : 9999
 oleg@nginx:~/http/server1$ python3 -m http.server 9999 --bind 0.0.0.0
 Serving HTTP on 0.0.0.0 port 9999 (http://0.0.0.0:9999/) ...
 ```
+Проверим работоспобоность:
+```
+oleg@nginx:~$ curl http://loсalhost:9999
+curl: (6) Could not resolve host: xn--loalhost-gch
+oleg@nginx:~$ ^C
+oleg@nginx:~$ curl http://localhost:9999
+Server 2 : 9999
+oleg@nginx:~$ curl http://localhost:7777
+server 3 : 7777
+oleg@nginx:~$ curl http://localhost:8888
+Server 1 : 8888
+```
 
 ```
 
