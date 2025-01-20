@@ -80,13 +80,22 @@ server {
    error_log	/var/log/nginx/example-http.com-error.log;
 
    location / {
-		proxy_pass	http://example_app;
+		proxy_pass	http://example_local;
 
    }
 
 }
 ```
+создадим файл 
+nano /etc/nginx/include/upstream.inc
+```
+upstream example_app {
 
+	server 127.0.0.1:8888 weight=3;
+        server 127.0.0.1:9999;
+
+}
+```
 `При необходимости прикрепитe сюда скриншоты
 ![Название скриншота](ссылка на скриншот)`
 ```
