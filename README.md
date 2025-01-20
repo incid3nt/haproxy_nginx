@@ -11,6 +11,19 @@
 - Настройте балансировку Round-robin на 4 уровне.
 - На проверку направьте конфигурационный файл haproxy, скриншоты, где видно перенаправление запросов на разные серверы при обращении к HAProxy.
 
+1. Запустим два simple python сервера:
+```
+oleg@nginx:~/http/server1$ cat index.html
+Server 1 : 8888
+oleg@nginx:~/http/server1$ python3 -m http.server 8888 --bind 0.0.0.0
+Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:8888/) ...
+```
+```
+oleg@nginx:~/http/server1$ cat index.html
+Server 2 : 9999
+oleg@nginx:~/http/server1$ python3 -m http.server 9999 --bind 0.0.0.0
+Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:9999/) ...
+
 ---
 
 ### Задание 2
