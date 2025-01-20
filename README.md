@@ -59,7 +59,10 @@ Server 1 : 8888
 ```
 Проверка конфигурационных файлов 
 ```
-nginx -t
+root@nginx:/home/oleg# sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
 ```
 
 `При необходимости прикрепитe сюда скриншоты
