@@ -81,7 +81,7 @@ curl -H 'HOST: example-http.com' http://localhost
 
 
 
-Round roby
+Round roby балансировка на 7 уровне osi
 создадим конфиг.файл со следующим содержанием:
 nano /etc/nginx/conf.d/example-http.conf
 ```
@@ -162,3 +162,10 @@ root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
 Server 2 : 9999
 ```
 как мы видим три запроса на Server1 и четвертый на Server 2
+
+nginx так же умеет производить балансировку на 4 уровне модели
+для этого необходимо произвести настройку главного конфиг.файла nginx
+
+```
+nano /etc/nginx/nginx.conf
+```
