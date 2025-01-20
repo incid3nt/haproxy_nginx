@@ -109,9 +109,9 @@ nano /etc/nginx/include/upstream.inc
 ```
 upstream example_app {
 
-	     server 127.0.0.1:8888 weight=2;
-        server 127.0.0.1:9999 weight=3;
-        server 127.0.0.1:7777 weight=4;
+	     server 127.0.0.1:8888;
+        server 127.0.0.1:9999;
+        server 127.0.0.1:7777;
 
 }
 ```
@@ -134,3 +134,31 @@ Server 2 : 9999
 root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
 server 3 : 7777
 ```
+
+
+поменяем вес:
+nano /etc/nginx/include/upstream.inc
+
+```
+upstream example_app {
+
+	     server 127.0.0.1:8888 weight=3;
+        server 127.0.0.1:9999;
+        #server 127.0.0.1:7777;
+```
+
+перезапустим сервер:
+```
+systemctl reload nginx
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 2 : 9999
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 1 : 8888
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 1 : 8888
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 1 : 8888
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 2 : 9999
+```
+как мы видим три запроса на Server1 и четвертый на Server 2
