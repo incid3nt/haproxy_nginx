@@ -64,6 +64,28 @@ nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ```
+создадим конфиг.файл со следующим содержанием:
+nano /etc/nginx/conf.d/example-http.conf
+```
+include /etc/nginx/include/upstream.inc;
+
+server {
+   listen	80;
+   
+
+   server_name	example-http.com;
+   
+
+   access_log	/var/log/nginx/example-http.com-acess.log;
+   error_log	/var/log/nginx/example-http.com-error.log;
+
+   location / {
+		proxy_pass	http://example_app;
+
+   }
+
+}
+```
 
 `При необходимости прикрепитe сюда скриншоты
 ![Название скриншота](ссылка на скриншот)`
