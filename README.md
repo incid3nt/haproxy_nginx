@@ -64,6 +64,24 @@ nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ```
+
+
+
+`При необходимости прикрепитe сюда скриншоты
+![Название скриншота](ссылка на скриншот)`
+```
+python3 -m http.server 9999 --bind 0.0.0.0
+```
+/usr/sbin/nginx -t
+проверка nginx
+
+
+curl -H 'HOST: example-http.com' http://localhost
+
+
+
+
+Round roby
 создадим конфиг.файл со следующим содержанием:
 nano /etc/nginx/conf.d/example-http.conf
 ```
@@ -80,7 +98,7 @@ server {
    error_log	/var/log/nginx/example-http.com-error.log;
 
    location / {
-		proxy_pass	http://example_local;
+		proxy_pass	http://example_app;
 
    }
 
@@ -91,18 +109,28 @@ nano /etc/nginx/include/upstream.inc
 ```
 upstream example_app {
 
-	server 127.0.0.1:8888 weight=3;
-        server 127.0.0.1:9999;
+	     server 127.0.0.1:8888 weight=2;
+        server 127.0.0.1:9999 weight=3;
+        server 127.0.0.1:7777 weight=4;
 
 }
 ```
-`При необходимости прикрепитe сюда скриншоты
-![Название скриншота](ссылка на скриншот)`
+перезапустим nginx
 ```
-python3 -m http.server 9999 --bind 0.0.0.0
+systemctl reload nginx
 ```
-/usr/sbin/nginx -t
-проверка nginx
-
-
-curl -H 'HOST: example-http.com' http://localhost
+выполним запросы к нашим серверам:
+```
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 1 : 8888
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 2 : 9999
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+server 3 : 7777
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 1 : 8888
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+Server 2 : 9999
+root@nginx:/home/oleg# curl -H 'HOST: example-http.com' http://localhost
+server 3 : 7777
+```
