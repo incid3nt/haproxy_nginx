@@ -169,3 +169,45 @@ nginx так же умеет производить балансировку н�
 ```
 nano /etc/nginx/nginx.conf
 ```
+в конце конфиг.файла укажем следующее:
+```
+stream {
+	include /etc/nginx/include/upstream.inc;
+	server	{
+		listen 8080;
+		
+		error_log	/var/log/nginx/example-tcp-error.log;
+		proxy_pass	example_app;
+	}
+}
+```
+
+чтоб не возникало ошибки установим пакет:
+```
+apt install -y libnginx-mod-stream
+```
+```
+root@nginx:/etc/nginx# sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+проверяем
+```
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 2 : 9999
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 1 : 8888
+root@nginx:/etc/nginx# curl http://localhost:8080
+Server 2 : 9999
+```
