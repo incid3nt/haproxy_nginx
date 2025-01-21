@@ -42,4 +42,15 @@ Server 2 : 9999
 python3 -m http.server 8888 --bind 0.0.0.0
 python3 -m http.server 9999 --bind 0.0.0.0
 ```
+проверяем:
+```
 
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://localhost:8888
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://localhost:9999
+Server2 : 9999
+```
+установим haproxy
+```
+sudo apt install haproxy
+```
