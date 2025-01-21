@@ -125,3 +125,28 @@ Server2 : 9999
 oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
 Server 1 : 8888
 ```
+Добавим строки в конфиг.файл haproxy
+- sudo nano /etc/haproxy/haproxy.cfg
+```
+        acl ACL_example.local hdr(host) -i example.local
+        use_backend web_servers if ACL_example.local
+```
+
+Проверяем
+```
+oleg@DESKTOP-6TMQOI1:/etc/haproxy$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:/etc/haproxy$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:/etc/haproxy$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:/etc/haproxy$ curl http://127.0.0.1:8088
+<html><body><h1>503 Service Unavailable</h1>
+No server is available to handle this request.
+</body></html>
+```
+HAproxy балансирует только тот http-трафик, который адресован домену example.local
+
+добавим веса:
+
