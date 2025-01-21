@@ -180,5 +180,115 @@ backend web_servers    # секция бэкенд
         server s1 127.0.0.1:8888 check weight 2
         server s2 127.0.0.1:9999 check weight 3
         server s3 127.0.0.1:11111 check weight 4
-oleg@DESKTOP-6TMQOI1:~$
+```
+```
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ ^C
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+```
+```
+Анализируя результаты запросов, можно заметить следующее распределение ответов от серверов:
+
+Сервер 1 (вес 2): 5 раз
+Сервер 2 (вес 3): 7 раз
+Сервер 3 (вес 4): 13 раз
+Всего было сделано 25 запросов.
+
+Давайте рассчитаем ожидаемое количество запросов для каждого сервера, основываясь на их весах:
+
+Общий вес: 
+2
++
+3
++
+4
+=
+9
+2+3+4=9
+Ожидаемое количество запросов для сервера 1: 
+2
+9
+×
+25
+≈
+5.56
+9
+2
+​
+ ×25≈5.56
+Ожидаемое количество запросов для сервера 2: 
+3
+9
+×
+25
+≈
+8.33
+9
+3
+​
+ ×25≈8.33
+Ожидаемое количество запросов для сервера 3: 
+4
+9
+×
+25
+≈
+11.11
+9
+4
+​
+ ×25≈11.11
+Фактические значения близки к ожидаемым, что подтверждает правильную работу балансировки нагрузки с учетом весов серверов.
 ```
