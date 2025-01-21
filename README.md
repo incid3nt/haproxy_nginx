@@ -30,5 +30,16 @@ mkdir http && mkdir http/server1 http/server2
 echo "Server 1 : 8888" > http/server1/index.html
 echo "Server 2 : 9999" > http/server2/index.html
 ```
+```
+cat http/server1/index.html
+Server 1 : 8888
+cat http/server2/index.html
+Server 2 : 9999
+```
 
+Запустим pthon сервер
+```
+python3 -m http.server 8888 --bind 0.0.0.0
+python3 -m http.server 9999 --bind 0.0.0.0
+```
 
