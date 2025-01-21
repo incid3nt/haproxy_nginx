@@ -292,3 +292,57 @@ Server2 : 9999
  ×25≈11.11
 Фактические значения близки к ожидаемым, что подтверждает правильную работу балансировки нагрузки с учетом весов серверов.
 ```
+# Задание 1 
+
+Добавим балансировку на 4 уровне модели OSI
+
+добавляем tcp балансировку
+открываем конфиг файл haproxy:
+```
+sudo nano /etc/haproxy/haproxy.cfg
+```
+допишем секцию :
+```
+listen web_tcp
+
+	bind :1325
+
+	server s1 127.0.0.1:8888 check inter 3s
+	server s2 127.0.0.1:9999 check inter 3s
+   server s3 127.0.0.1:11111 check inter 3s
+```
+проверим работоспобность:
+```
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl http://localhost:1325
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$
+```
+видим что балансировка на 4 уровне осущетсвляется
