@@ -54,3 +54,24 @@ Server2 : 9999
 ```
 sudo apt install haproxy
 ```
+установили:
+```
+oleg@DESKTOP-6TMQOI1:~/http/server1$ systemctl status haproxy
+● haproxy.service - HAProxy Load Balancer
+     Loaded: loaded (/usr/lib/systemd/system/haproxy.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-01-21 22:34:16 MSK; 27min ago
+       Docs: man:haproxy(1)
+             file:/usr/share/doc/haproxy/configuration.txt.gz
+   Main PID: 6658 (haproxy)
+     Status: "Ready."
+      Tasks: 9 (limit: 9447)
+     Memory: 85.9M ()
+     CGroup: /system.slice/haproxy.service
+             ├─6658 /usr/sbin/haproxy -Ws -f /etc/haproxy/haproxy.cfg -p /run/haproxy.pid -S /run/haproxy-master.sock
+             └─6660 /usr/sbin/haproxy -Ws -f /etc/haproxy/haproxy.cfg -p /run/haproxy.pid -S /run/haproxy-master.sock
+
+Jan 21 22:34:16 DESKTOP-6TMQOI1 systemd[1]: Starting haproxy.service - HAProxy Load Balancer...
+Jan 21 22:34:16 DESKTOP-6TMQOI1 haproxy[6658]: [NOTICE]   (6658) : New worker (6660) forked
+Jan 21 22:34:16 DESKTOP-6TMQOI1 haproxy[6658]: [NOTICE]   (6658) : Loading success.
+Jan 21 22:34:16 DESKTOP-6TMQOI1 systemd[1]: Started haproxy.service - HAProxy Load Balancer.
+```
