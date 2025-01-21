@@ -102,3 +102,26 @@ backend web_servers    # секция бэкенд
         server s1 127.0.0.1:8888 check
         server s2 127.0.0.1:9999 check
 ```
+запросы чередуются,балансировщик работает в режиме roundrobin
+```
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~/http/server1$ curl http://172.18.227.178:8088/
+Server 1 : 8888
+```
