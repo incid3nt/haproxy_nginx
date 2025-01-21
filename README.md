@@ -37,9 +37,7 @@ Serving HTTP on 0.0.0.0 port 9999 (http://0.0.0.0:9999/) ...
 
 ```
 
-oleg@nginx:~/http/server3$ python3 -m http.server 7777 --bind 0.0.0.0
-Serving HTTP on 0.0.0.0 port 7777 (http://0.0.0.0:7777/) ...
-oleg@nginx:~/http/server1$ cat index.html
+
 Server 1 : 8888
 oleg@nginx:~/http/server1$ python3 -m http.server 8888 --bind 0.0.0.0
 Serving HTTP on 0.0.0.0 port 8888 (http://0.0.0.0:8888/) ...
@@ -57,14 +55,32 @@ server 3 : 7777
 oleg@nginx:~$ curl http://localhost:8888
 Server 1 : 8888
 ```
-Проверка конфигурационных файлов 
+добавим в конфигурационный файл haproxy:
 ```
-root@nginx:/home/oleg# sudo nginx -t
-nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful
+listen stats  # веб-страница со статистикой
+        bind                    :888
+        mode                    http
+        stats                   enable
+        stats uri               /stats
+        stats refresh           5s
+        stats realm             Haproxy\ Statistics
+
+frontend example  # секция фронтенд
+        mode http
+        bind :8088
+        default_backend web_servers
+        acl example.local hdr(host) -i example.com
+        use_backend web_servers if ACL_example.com
+
+backend web_servers    # секция бэкенд
+        mode http
+        balance roundrobin
+        option httpchk
+        http-check send meth GET uri /index.html
+        server s1 127.0.0.1:8888 check
+        server s2 127.0.0.1:9999 check
 
 ```
-
 
 
 `При необходимости прикрепитe сюда скриншоты
