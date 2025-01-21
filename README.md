@@ -18,7 +18,7 @@
 - HAproxy должен балансировать только тот http-трафик, который адресован домену example.local
 - На проверку направьте конфигурационный файл haproxy, скриншоты, где видно перенаправление запросов на разные серверы при обращении к HAProxy c использованием домена example.local и без него.
 
-### Задание 1
+### Задание 2 Решение
 - Запустите два simple python сервера на своей виртуальной машине на разных портах:
 
 Создадим папку http и еще внутри 2 папки для каждого сервера:
@@ -148,5 +148,37 @@ No server is available to handle this request.
 ```
 HAproxy балансирует только тот http-трафик, который адресован домену example.local
 
-добавим веса:
+добавим третий python сервер:
+curl http://127.0.0.1:11111
+Server 3 : 11111
+добавим его в конфиг. haproxy
+```
 
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 1 : 8888
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server2 : 9999
+
+oleg@DESKTOP-6TMQOI1:~$ curl -H 'Host:example.local' http://127.0.0.1:8088
+Server 3 : 11111
+```
+
+добавим веса:
+```
+backend web_servers    # секция бэкенд
+        mode http
+        balance roundrobin
+        option httpchk
+        http-check send meth GET uri /index.html
+        server s1 127.0.0.1:8888 check weight 2
+        server s2 127.0.0.1:9999 check weight 3
+        server s3 127.0.0.1:11111 check weight 4
+oleg@DESKTOP-6TMQOI1:~$
+```
